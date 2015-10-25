@@ -29,7 +29,7 @@ public class Application implements CommandLineRunner {
     public void run(String... strings) throws Exception {
 
         log.info("Creating tables");
-
+/*
         jdbcTemplate.execute("DROP TABLE Seat IF EXISTS");
         jdbcTemplate.execute("CREATE TABLE Seat(" +
                 "id SERIAL, levelId VARCHAR(255), levelName VARCHAR(255))");
@@ -50,5 +50,6 @@ public class Application implements CommandLineRunner {
                 "SELECT id, levelId, levelName FROM seat WHERE levelName = ?", new Object[] { "balcony" },
                 (rs, rowNum) -> new Seat(rs.getInt("id"), rs.getInt("levelId"), rs.getString("levelName"))
         ).forEach(seat -> log.info(seat.toString()));
+        */
     }
 }

@@ -43,6 +43,8 @@ public enum Venue {
         return rowsPerLevel*seatsPerRow;
     }
 
+
+
     public double getPricePerSeatInUSDByLevelName() {
         return pricePerSeatInUSD;
     }
@@ -55,12 +57,16 @@ public enum Venue {
         return levelId;
     }
 
-    public static Venue get(int levelId) {
+    public static Venue getVenue(int levelId) {
         return lookup.get(levelId);
     }
 
     public static int getTotalNumberOfSeatsInVenue() {
         return totalNumberOfSeatsInVenue;
+    }
+
+    public String getLevelName(){
+        return levelName.getLevelType();
     }
 
 }
