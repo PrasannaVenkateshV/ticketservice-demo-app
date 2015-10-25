@@ -1,0 +1,15 @@
+*.class
+.env
+**.env
+# Package Files #
+*.jar
+*.war
+*.ear
+**target/
+**.settings
+**.classpath
+**.project
+**.idea
+**.iml
+**.grails
+**.log*
