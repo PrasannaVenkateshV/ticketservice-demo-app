@@ -1,7 +1,6 @@
 package com.ticketservice.service;
 
 import com.ticketservice.dao.SeatHoldRepository;
-import com.ticketservice.domain.Seat;
 import com.ticketservice.domain.SeatHold;
 import com.ticketservice.domain.SeatTransaction;
 import com.ticketservice.util.InsufficientSeatsException;

@@ -21,6 +21,8 @@ public class TicketServiceController {
     @Autowired
     TicketService ticketService;
 
+
+    //todo: use jackson for serializing to JSON
     @RequestMapping("/availableSeats")
     public @ResponseBody String availableSeats(@RequestParam(value="level", required=false) Integer level) {
         //model.addAttribute("seats", ticketService.numSeatsAvailable(Optional.of(level)));
