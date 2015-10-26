@@ -8,7 +8,7 @@
 * mvn clean package spring-boot:run - to run the application
 
 The Project uses Spring boot as the framework for effective implementation of the TicketService.
-An container based web application is chosen as the implementation mechanism to take advantage of the multi user and multi threading capabilities that comes with it.
+An container based web application/service is chosen as the implementation mechanism to take advantage of the multi user and multi threading capabilities that comes with it.
 
 Spring Boot is the goto choice because its faster to develop due to much less bolier plate code, that the developer need to handle
 
