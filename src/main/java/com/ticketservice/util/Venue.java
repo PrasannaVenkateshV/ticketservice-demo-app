@@ -5,6 +5,8 @@ import java.util.Map;
 
 /**
  * Enum representing the Venue
+ * It is better to create a lookup table with all the seats in a venue for easy management in real time.
+ * keeping it as enum for faster development
  */
 
 
