@@ -15,6 +15,9 @@ public class SeatHold {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long seatHoldId;
 
+    /**
+     * SeatTransaction
+     */
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "seatHold", fetch = FetchType.EAGER)
     @OrderBy("seatTransactionId DESC")
     private List<SeatTransaction> seatTransactions;

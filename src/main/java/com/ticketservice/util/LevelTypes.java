@@ -1,7 +1,7 @@
 package com.ticketservice.util;
 
 /**
- * Created by pvaradan on 10/24/15.
+ * level types enum
  */
 public enum LevelTypes {
     ORCHESTRA("ORCHESTRA"), MAIN("MAIN"), BALCONY1("BALCONY1"), BALCONY2("BALCONY2");

@@ -1,14 +1,12 @@
 package com.ticketservice.service;
 
 import com.ticketservice.dao.SeatHoldRepository;
-import com.ticketservice.domain.Seat;
 import com.ticketservice.domain.SeatHold;
 import com.ticketservice.domain.SeatTransaction;
+import com.ticketservice.util.InsufficientSeatsException;
 import com.ticketservice.util.TicketServiceUtil;
 import com.ticketservice.util.Venue;
-import org.h2.jdbc.JdbcSQLException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -19,17 +17,23 @@ import java.util.*;
 @Service
 public class TicketServiceImpl implements TicketService {
 
+
+    //todo: implement logger in the application
+
     /**
      * the duration for which a seat Hold is active
      */
+    //todo: move this to properties - this does not belong here
     private static final int seatOnHoldDuration = 60;
-
-    @Autowired
-    JdbcTemplate jdbcTemplate;
 
     @Autowired
     SeatHoldRepository seatHoldRepository;
 
+    /**
+     * Calculates the total available seats in a venue(optionally by level) by subtracting the seats which are onHold and reserved
+     * @param venueLevel a numeric venue level identifier to limit the search
+     * @return
+     */
     public int numSeatsAvailable(Optional<Integer> venueLevel) {
         int venueLevelId = venueLevel.isPresent() ? venueLevel.get().intValue() : 0;
         if (TicketServiceUtil.isValidSeatingLevelId(venueLevelId)) {
@@ -38,7 +42,18 @@ public class TicketServiceImpl implements TicketService {
         return Venue.getTotalNumberOfSeatsInVenue() - numOfSeatsOnHoldAndReservedByLevel(venueLevelId);
     }
 
-    public SeatHold findAndHoldSeats(int numSeats, Optional<Integer> minLevel, Optional<Integer> maxLevel, String customerEmail) {
+    /**
+     * finds and hold seats given the input parameters - holds seats with preference to the min level.
+     * when minLevel and maxLevel is supplied - assumes the venue's min and Max
+     * @param numSeats the number of seats to find and hold
+     * @param minLevel the minimum venue level
+     * @param maxLevel the maximum venue level
+     * @param customerEmail unique identifier for the customer
+     * @return
+     * @throws InsufficientSeatsException
+     */
+    public SeatHold findAndHoldSeats(int numSeats, Optional<Integer> minLevel, Optional<Integer> maxLevel, String customerEmail)
+            throws InsufficientSeatsException {
         int minLevelId, maxLevelId = 0;
         minLevelId = minLevel.isPresent() ? minLevel.get().intValue() : 1;
         maxLevelId = maxLevel.isPresent() ? maxLevel.get().intValue() : 4;
@@ -52,6 +67,9 @@ public class TicketServiceImpl implements TicketService {
             if(numSeatsTaken >= numSeats) {
                 break;
             }
+        }
+        if(numSeatsTaken < numSeats) {
+            throw new InsufficientSeatsException();
         }
         SeatHold seatHold =  new SeatHold();
         List<SeatTransaction> seatTransactions = new ArrayList<>();
@@ -92,6 +110,14 @@ public class TicketServiceImpl implements TicketService {
         Calendar calendar = Calendar.getInstance(); // gets a calendar using the default time zone and locale.
         calendar.add(Calendar.SECOND, seatOnHoldDuration);
         return calendar.getTime();
+    }
+
+    public SeatHoldRepository getSeatHoldRepository() {
+        return seatHoldRepository;
+    }
+
+    public void setSeatHoldRepository(SeatHoldRepository seatHoldRepository) {
+        this.seatHoldRepository = seatHoldRepository;
     }
 
 }

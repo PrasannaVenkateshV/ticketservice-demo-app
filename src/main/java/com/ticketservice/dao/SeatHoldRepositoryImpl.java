@@ -18,6 +18,12 @@ public class SeatHoldRepositoryImpl implements SeatHoldRepositoryCustom {
     private EntityManager em;
 
 
+    /**
+     * get count of seats on hold and reserved.
+     * when a valid levelId is provided will return per level, if not will return for all the levels.
+     * @param levelId
+     * @return
+     */
     public int getCountOfSeatsOnHoldAndReserved(int levelId) {
         Query q = getCurrentSession().createQuery("select count(seatTransaction) from SeatTransaction seatTransaction \n" +
                 " where seatTransaction.levelId = :levelId \n" +
@@ -30,7 +36,12 @@ public class SeatHoldRepositoryImpl implements SeatHoldRepositoryCustom {
     }
 
 
-
+    /**
+     * reserve seats using a seatHold Id
+     * @param reservedTimestamp
+     * @param seatHoldId
+     * @return
+     */
     @Modifying(clearAutomatically = true)
     public int reserve(Date reservedTimestamp, Long seatHoldId) {
         Query q = getCurrentSession().createQuery("UPDATE SeatHold seatHold \n" +

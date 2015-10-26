@@ -1,10 +1,15 @@
 package com.ticketservice.util;
 
 /**
- * Created by pvaradan on 10/24/15.
+ * Utility class for ticket service
  */
 public class TicketServiceUtil {
 
+    /**
+     * returns if a seating level is valid or not
+     * @param levelId
+     * @return
+     */
     public static boolean isValidSeatingLevelId(int levelId) {
         if(levelId > 0 && levelId <= Venue.values().length ) {
             return true;

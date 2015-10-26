@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Created by pvaradan on 10/22/15.
+ * Enum representing the Venue
  */
 
 

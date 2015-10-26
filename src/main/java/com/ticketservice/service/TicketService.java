@@ -1,6 +1,7 @@
 package com.ticketservice.service;
 
 import com.ticketservice.domain.SeatHold;
+import com.ticketservice.util.InsufficientSeatsException;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -28,7 +29,7 @@ public interface TicketService {
      */
     SeatHold findAndHoldSeats(int numSeats, Optional<Integer> minLevel,
 
-                              Optional<Integer> maxLevel, String customerEmail);
+                              Optional<Integer> maxLevel, String customerEmail) throws InsufficientSeatsException;
 
     /**
      * Commit seats held for a specific customer
