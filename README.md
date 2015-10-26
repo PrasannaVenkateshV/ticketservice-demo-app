@@ -5,7 +5,15 @@
 
 ## Build and Run project
 * mvn clean install -  To compile and run tests.
-* mvn clean package spring-boot:run - to run the application
+* mvn clean package spring-boot:run - to run the application, the application uses the default http port 8080.
+* some sample URLs that could be used to quickly see the behaviour of the application
+
+http://localhost:8080/ticket-service/availableSeats?level=1
+
+http://localhost:8080/ticket-service/holdSeats?numSeats=4&email=123@abc.com
+
+http://localhost:8080/ticket-service/reserve?seatHoldId=1&email=123@abc.com
+
 
 The Project uses Spring boot as the framework for effective implementation of the TicketService.
 An container based web application/service is chosen as the implementation mechanism to take advantage of the multi user and multi threading capabilities that comes with it.
