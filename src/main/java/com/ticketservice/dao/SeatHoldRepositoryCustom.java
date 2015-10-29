@@ -1,5 +1,7 @@
 package com.ticketservice.dao;
 
+import com.ticketservice.domain.SeatHold;
+
 import java.util.Date;
 
 /**
@@ -9,5 +11,6 @@ public interface SeatHoldRepositoryCustom {
 
     public int getCountOfSeatsOnHoldAndReserved(int level);
     public int reserve(Date reservedTimestamp, Long seatHoldId);
+    //public SeatHold save(SeatHold seatHold);
 
 }

@@ -21,6 +21,7 @@ public class SeatTransaction {
     Long seatTransactionId;
 
     @Column(nullable = false)
+    // todo: this field need to be annotated with index
     Integer levelId;
 
     /**
@@ -28,6 +29,7 @@ public class SeatTransaction {
      */
     @JoinColumn(name = "seatHoldId")
     @ManyToOne(optional = false)
+    // todo: this field need to be annotated with index
     SeatHold seatHold;
 
     public SeatTransaction(Integer levelId, SeatHold seatHold){

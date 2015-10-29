@@ -1,5 +1,6 @@
 package com.ticketservice.dao;
 
+import com.ticketservice.domain.SeatHold;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import javax.persistence.EntityManager;
@@ -27,8 +28,8 @@ public class SeatHoldRepositoryImpl implements SeatHoldRepositoryCustom {
     public int getCountOfSeatsOnHoldAndReserved(int levelId) {
         Query q = getCurrentSession().createQuery("select count(seatTransaction) from SeatTransaction seatTransaction \n" +
                 " where seatTransaction.levelId = :levelId \n" +
-                " and seatTransaction.seatHold.reservedTimestamp !=null \n " +
-                " and seatTransaction.seatHold.seatHoldExpirationTimestamp > :currentTime");
+                " and seatTransaction.seatHold.seatHoldExpirationTimestamp > :currentTime" +
+                " or seatTransaction.seatHold.reservedTimestamp !=null \n ");
         q.setParameter("levelId", levelId);
         q.setParameter("currentTime",new Date());
         Long count = (Long)q.list().get(0);
@@ -51,6 +52,7 @@ public class SeatHoldRepositoryImpl implements SeatHoldRepositoryCustom {
         q.setParameter("seatHoldId", seatHoldId);
         return q.executeUpdate();
     }
+
 
     private Session getCurrentSession(){
         return em.unwrap(Session.class);

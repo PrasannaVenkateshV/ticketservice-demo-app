@@ -12,10 +12,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
@@ -44,7 +41,7 @@ public class TicketServiceImplUnitTests {
 
 
     @Test
-    public void testNumSeatsAvailable(){
+    public void testNumSeatsAvailableHappyPath(){
         int level = 1;
         int seatsOnHoldAndReserved = 2;
         when(seatHoldRepository.getCountOfSeatsOnHoldAndReserved(level)).thenReturn(seatsOnHoldAndReserved);
@@ -53,7 +50,7 @@ public class TicketServiceImplUnitTests {
     }
 
     @Test
-    public void testFindAndHoldSeats() {
+    public void testFindAndHoldSeatsHappyPath() {
         int numOfSeats = 2;
         String customerEmail = "abc@test.com";
         SeatHold seatHold = null;
@@ -65,10 +62,10 @@ public class TicketServiceImplUnitTests {
         }
         assertNotNull(seatHold);
     }
-
-    //todo: mock findOne and run the test
-    public void testReserveSeats() {
+    @Test
+    public void testReserveSeatsHappyPath() {
         SeatHold seatHold = createSeatHoldForTest();
+        when(seatHoldRepository.findOne(createSeatHoldForTest().getSeatHoldId())).thenReturn(createSeatHoldForTest());
         when(seatHoldRepository.reserve(any(Date.class), any(Long.class))).thenReturn(1);
         String response = ticketService.reserveSeats(seatHold.getSeatHoldId().intValue(), seatHold.getCustomerEmail());
         assertEquals(response, "reserved "+ seatHold.getSeatHoldId());
@@ -76,6 +73,8 @@ public class TicketServiceImplUnitTests {
 
     private SeatHold createSeatHoldForTest(){
         SeatHold seatHold =  new SeatHold();
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.SECOND, 60);
         List<SeatTransaction>  seatTransactionList =  new ArrayList<>();
         SeatTransaction seatTransaction1 = new SeatTransaction(1, seatHold);
         seatTransaction1.setSeatTransactionId(1L);
@@ -84,7 +83,8 @@ public class TicketServiceImplUnitTests {
         seatTransactionList.add(seatTransaction1);
         seatTransactionList.add(seatTransaction2);
         seatHold.setSeatTransactions(seatTransactionList);
-        seatHold.setSeatHoldExpirationTimestamp(new Date());
+        seatHold.setSeatHoldExpirationTimestamp(calendar.getTime());
+        seatHold.setCustomerEmail("abc@123.com");
         seatHold.setSeatHoldId(1L);
         return seatHold;
     }
