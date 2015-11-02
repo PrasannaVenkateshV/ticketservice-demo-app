@@ -11,7 +11,7 @@
   <properties>
     <java.version>1.8</java.version>
     <unit-tests.skip>false</unit-tests.skip>
-    <integration-tests.skip>true</integration-tests.skip>
+    <integration-tests.skip>false</integration-tests.skip>
   </properties>
 
   <dependencies>

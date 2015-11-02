@@ -53,7 +53,10 @@ public class TicketServiceImpl implements TicketService {
      * @return
      * @throws InsufficientSeatsException
      */
-    public SeatHold findAndHoldSeats(int numSeats, Optional<Integer> minLevel, Optional<Integer> maxLevel, String customerEmail)
+    //todo: ugly use of synchronized here, this any way is not going to work in an clustered environment.
+    // The solution is to create a table with Seat and level pre-populated(for every seat in venue) and add Seat expiry and seat reserved to the Seat Transaction table.
+    // And use optimistic locking.
+    public synchronized SeatHold findAndHoldSeats(int numSeats, Optional<Integer> minLevel, Optional<Integer> maxLevel, String customerEmail)
             throws InsufficientSeatsException {
         int minLevelId, maxLevelId = 0;
         minLevelId = minLevel.isPresent() ? minLevel.get().intValue() : 1;
@@ -70,7 +73,7 @@ public class TicketServiceImpl implements TicketService {
             }
         }
         if(numSeatsTaken < numSeats) {
-            throw new InsufficientSeatsException();
+            throw new InsufficientSeatsException(numSeats + " seats are not available");
         }
         SeatHold seatHold =  new SeatHold();
         List<SeatTransaction> seatTransactions = new ArrayList<>();

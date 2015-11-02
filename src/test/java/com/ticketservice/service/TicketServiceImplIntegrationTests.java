@@ -4,7 +4,9 @@ import com.ticketservice.Application;
 import com.ticketservice.dao.SeatHoldRepository;
 import com.ticketservice.domain.SeatHold;
 import com.ticketservice.domain.SeatTransaction;
+import com.ticketservice.util.InsufficientSeatsException;
 import com.ticketservice.util.Venue;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -59,7 +61,7 @@ public class TicketServiceImplIntegrationTests {
     }
 
     @Test
-    public void numSeatsAvailableWhenSeatsAreTaken() {
+    public void numSeatsAvailableWhenSomeSeatsAreTaken() {
         int seatingLevel = 1;
         int availableSeats;
         int seatsToBeTaken =  10;
@@ -69,6 +71,44 @@ public class TicketServiceImplIntegrationTests {
         }
         availableSeats = ticketService.numSeatsAvailable(Optional.of(1));
         assert(availableSeats == Venue.getVenue(1).getTotalSeats() - seatsToBeTaken);
+    }
+
+    @Test
+    public void holdMoreThanAvailableSeats() {
+        int seatingLevel = 1;
+        int availableSeats;
+        int seatsToBeTaken =  100;
+        SeatHold seatHold = null;
+        //create max num of seats in a level and set it on hold.
+        for(int i = 0; i < seatsToBeTaken; i ++) {
+            seatHoldRepository.save(createSeatHoldForIntegrationTest(seatingLevel));
+        }
+        try {
+            seatHold = ticketService.findAndHoldSeats(1151, Optional.of(1), Optional.of(1),"abcd@123.com");
+        } catch (Exception e) {
+            assert(e instanceof InsufficientSeatsException);
+            assert(e.getMessage().equals("1151 seats are not available"));
+            assert (seatHold == null);
+        }
+    }
+
+    @Test
+    public void reserveASeatWithWrongSeatHoldId() {
+        int seatingLevel = 1;
+        int availableSeats;
+        int seatsToBeTaken =  100;
+        SeatHold seatHold = null;
+        //create max num of seats in a level and set it on hold.
+        for(int i = 0; i < seatsToBeTaken; i ++) {
+            seatHoldRepository.save(createSeatHoldForIntegrationTest(seatingLevel));
+        }
+        try {
+            seatHold = ticketService.findAndHoldSeats(1151, Optional.of(1), Optional.of(1),"abcd@123.com");
+        } catch (Exception e) {
+            assert(e instanceof InsufficientSeatsException);
+            assert(e.getMessage().equals("1151 seats are not available"));
+            assert (seatHold == null);
+        }
     }
 
     private SeatHold createSeatHoldForIntegrationTest(int seatingLevel){
@@ -84,6 +124,10 @@ public class TicketServiceImplIntegrationTests {
         return seatHold;
     }
 
+    @After
+    public void tearDown(){
+        seatHoldRepository.deleteAll();
+    }
 
-    
+
 }
