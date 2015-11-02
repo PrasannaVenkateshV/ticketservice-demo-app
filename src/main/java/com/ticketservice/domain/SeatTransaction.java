@@ -39,19 +39,6 @@ public class SeatTransaction {
 
     public SeatTransaction(){}
 
-    /**
-     * todo: before every commit - check to see is there are seats available in a level, to avoid over booking due to race condition.
-     * @throws InsufficientSeatsException
-     */
-    @PrePersist
-    private void checkSeatAvailability() throws InsufficientSeatsException {
-    }
-
-   /*
-    private static int checkSeatAvailabilityCount(int levelId){
-        return seatHoldRepository.getCountOfSeatsOnHoldAndReserved(levelId);
-    }
-*/
     public Long getSeatTransactionId() {
         return seatTransactionId;
     }
