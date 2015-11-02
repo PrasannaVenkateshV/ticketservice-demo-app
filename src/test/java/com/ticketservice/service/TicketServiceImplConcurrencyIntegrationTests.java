@@ -25,7 +25,7 @@ import java.util.Optional;
 import java.util.concurrent.*;
 
 /**
- * Creating a concurrency Tests just as a sanity
+ * Test for Race condition - using multiple worker threads accessing SeatHold.
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = Application.class)
