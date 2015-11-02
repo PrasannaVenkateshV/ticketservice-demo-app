@@ -110,6 +110,7 @@ public class TicketServiceImplIntegrationTests {
             assert (seatHold == null);
         }
     }
+    //todo: repeat the above test for all possible scenarios of reserveSeats.
 
     private SeatHold createSeatHoldForIntegrationTest(int seatingLevel){
         SeatHold seatHold =  new SeatHold();
