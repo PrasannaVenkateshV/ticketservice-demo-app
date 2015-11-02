@@ -5,6 +5,7 @@
 
 ## Build and Run project
 * mvn clean install -  To compile and run tests.
+* mvn clean install -Dmaven.test.skip=true  - to only compile and not run any tests
 * mvn clean package spring-boot:run - to run the application, the application uses the default http port 8080.
 * some sample URLs that could be used to quickly see the behaviour of the application
 
