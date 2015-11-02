@@ -124,17 +124,13 @@ public class TicketServiceImplConcurrencyIntegrationTests {
         private void doSeatHold() {
             Thread curThread = Thread.currentThread();
             System.out.println(curThread.getName() + " currently executing the task " + id);
-
             beginSeatHoldSignal.countDown();
             try {
                 beginSeatHoldSignal.await();
+                SeatHold seatHold = ticketService.findAndHoldSeats(50, Optional.of(1), Optional.of(1), "abc" + id + "@test.com");
             } catch(InterruptedException e) {
                 e.printStackTrace();
-            }
-            try {
-
-                SeatHold seatHold = ticketService.findAndHoldSeats(50, Optional.of(1), Optional.of(1), "abc" + id + "@test.com");
-            } catch (InsufficientSeatsException e) {
+            } catch(InsufficientSeatsException e) {
                 e.printStackTrace();
             }
             doneSeatHoldSignal.countDown();
