@@ -37,7 +37,6 @@ public class TicketServiceImpl implements TicketService {
     public int numSeatsAvailable(Optional<Integer> venueLevel) {
         int venueLevelId = venueLevel.isPresent() ? venueLevel.get().intValue() : 0;
         if (TicketServiceUtil.isValidSeatingLevelId(venueLevelId)) {
-            System.out.println("num of records in SeatTransaction" + seatHoldRepository.findAll());
             return Venue.getVenue(venueLevelId).getTotalSeats() - numOfSeatsOnHoldAndReservedByLevel(venueLevelId);
         }
         return Venue.getTotalNumberOfSeatsInVenue() - numOfSeatsOnHoldAndReservedByLevel(venueLevelId);
